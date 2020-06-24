@@ -27,8 +27,8 @@ const Tiles = () => {
   }, [measurementData]);
   
   return (
-    <div>
-      <Grid container direction="row" justify="center" alignItems="center" spacing={3}>
+    <div style={{overflow: "hidden"}}>
+      <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
         {list
           ? list.map(a => {
             return (

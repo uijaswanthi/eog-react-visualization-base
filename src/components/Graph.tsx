@@ -42,7 +42,7 @@ const Graph = () => {
     return null;
   }
   return (    
-    <ResponsiveContainer width="95%" height={400}>
+    <ResponsiveContainer width="80%" height={400}>
       <LineChart data={data}>
         <Tooltip labelFormatter={(value: any) => moment(value).format('MM-DD-YYYY hh:mm:ss')} />
         {

@@ -150,9 +150,7 @@ const Metrics = () => {
           <Dropdown items={metrics} handleSelectedChange={handleSelectedChange} />
         </Box>
       </Box>
-      <br />
       <Graph />
-      <br />
       <Tiles />
     </div>
   );
