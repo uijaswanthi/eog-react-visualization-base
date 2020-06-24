@@ -18,6 +18,15 @@ const initialState: IMetricsState = {
   selectedMetrics: []
 }
 
+const  getRandomColor = (): string => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 const slice = createSlice({
   name: 'metric',
   initialState,
@@ -34,6 +43,19 @@ const slice = createSlice({
         }
       });
       state.measurementData = measurementData;
+    },
+    setGraphData: (state, action) => {
+      const graphData = state.graphData;
+      for (const metric in action.payload) {
+        if(!graphData[metric]) {
+          graphData[metric] = {
+            unit: action.payload[metric].unit,
+            data: action.payload[metric].data,
+            color: getRandomColor(),
+          };
+        }
+      }
+      state.graphData = graphData;
     },
     setMeasurementData: (state, action: any) => {
       if(state.selectedMetrics.indexOf(action.payload.metric) > -1) {
