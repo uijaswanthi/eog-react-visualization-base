@@ -61,6 +61,12 @@ const slice = createSlice({
       if(state.selectedMetrics.indexOf(action.payload.metric) > -1) {
         state.measurementData[action.payload.metric] = action.payload;
       }
+      const graphData = state.graphData;
+      if(graphData[action.payload.metric] && graphData[action.payload.metric].data && graphData[action.payload.metric].data.length > 0) {
+        graphData[action.payload.metric].data.push(action.payload);
+        graphData[action.payload.metric].data.shift()
+      }
+      state.graphData = graphData;
     },
     metricsApiErrorAction: (state, action: PayloadAction<ApiErrorAction>) => state,
   }
