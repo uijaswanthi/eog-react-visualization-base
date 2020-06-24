@@ -35,6 +35,11 @@ const slice = createSlice({
       });
       state.measurementData = measurementData;
     },
+    setMeasurementData: (state, action: any) => {
+      if(state.selectedMetrics.indexOf(action.payload.metric) > -1) {
+        state.measurementData[action.payload.metric] = action.payload;
+      }
+    },
     metricsApiErrorAction: (state, action: PayloadAction<ApiErrorAction>) => state,
   }
 })
