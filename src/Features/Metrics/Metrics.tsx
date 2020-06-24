@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { actions } from './reducer';
 import { IState } from '../../store';
+import Tiles from '../../components/Tiles';
 import Dropdown from '../../components/Dropdown';
 
 const getMetrics = (state: IState) => {
@@ -92,6 +93,8 @@ const Metrics = () => {
           <Dropdown items={metrics} handleSelectedChange={handleSelectedChange} />
         </Box>
       </Box>
+      <br />
+      <Tiles />
     </div>
   );
 };
