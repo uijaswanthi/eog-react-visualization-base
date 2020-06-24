@@ -1,6 +1,6 @@
-import { useQuery } from 'urql';
 import Box from '@material-ui/core/Box';
-import React, { useEffect } from 'react';
+import { useQuery, useSubscription } from 'urql';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { actions } from './reducer';
@@ -15,6 +15,17 @@ const getMetrics = (state: IState) => {
 const query = `
   query {
     getMetrics
+  }
+`;
+
+const subscription = `
+  subscription {
+    newMeasurement{
+      metric
+      at
+      value
+      unit
+    }
   }
 `;
 
@@ -38,11 +49,37 @@ const FetchMetricList = () => {
 };
 
 
+const FetchNewMeasurementData = () => {
+  const dispatch = useDispatch();
+  const receiveMeasurement = useCallback(
+    measurement =>dispatch(actions.setMeasurementData(measurement)),
+    [dispatch]
+  );
+
+  const [result] = useSubscription({
+    query: subscription,
+    variables: {}
+  });
+  const { data, error } = result;
+  useEffect(() => {
+    if (error) {
+      dispatch(actions.metricsApiErrorAction({ error: error.message }));
+      return
+    }
+    if (!data) {
+      return;
+    }
+    const { newMeasurement } = data;
+    receiveMeasurement(newMeasurement);
+  }, [data, error, dispatch, receiveMeasurement]);
+};
+
 const Metrics = () => {
   const dispatch = useDispatch();
   const metrics = useSelector(getMetrics);
 
   FetchMetricList();
+  FetchNewMeasurementData();
 
   const handleSelectedChange = (_event: React.ChangeEvent<{}>, values: string[]) => {
     dispatch(actions.updateSelected(values));
